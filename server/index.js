@@ -59,4 +59,8 @@ router.route('/albums/:album_id')
 
 app.use('/api', router);
 
+app.get('*', function(request, response) {
+  response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
+});
+
 app.listen(port, () => console.log(`API running on port ${port}`));
