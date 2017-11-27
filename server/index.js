@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const Album = require('./models/albums');
+const path = require('path');
 
 const app = express();
 const router = express.Router();
