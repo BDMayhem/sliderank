@@ -6,7 +6,7 @@ import Album from './album';
 const HomePage = () => {
   return (
     <Home
-      url={process.env.REACT_APP_BASE_URL}
+      url='localhost:5000/api/albums/'
     />
   );
 };
