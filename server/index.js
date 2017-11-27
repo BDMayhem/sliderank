@@ -25,6 +25,8 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use(express.static(path.resolve(__dirname, '../react-ui/build'));
+
 app.get('/api', (req, res) => res.json({ message: 'API initialized' }));
 
 router.route('/albums')
@@ -60,7 +62,6 @@ router.route('/albums/:album_id')
 
 app.use('/api', router);
 
-app.use(express.static('build'));
 app.get('*', function(request, response) {
   response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
 });
