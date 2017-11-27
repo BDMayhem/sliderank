@@ -23,7 +23,7 @@ class Home extends Component {
 
   handleAlbumSubmit(owner, photoset) {
     //check if submitted URL has user name or id
-    axios.get(`https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&api_key=${process.env.REACT_APP_FLICKR_KEY}&username=${owner}&format=json&nojsoncallback=1`)
+    axios.get(`https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&api_key=478edb7856d5b1f2f7a09634198f5102&username=${owner}&format=json&nojsoncallback=1`)
       .then(res => {
         let checkedOwner;
         //if name, convert to id
@@ -32,7 +32,7 @@ class Home extends Component {
         }  else {
           checkedOwner = owner;
         }
-        return axios.get(`https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${process.env.REACT_APP_FLICKR_KEY}&photoset_id=${photoset}&user_id=${checkedOwner}&format=json&nojsoncallback=1`);
+        return axios.get(`https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=478edb7856d5b1f2f7a09634198f5102&photoset_id=${photoset}&user_id=${checkedOwner}&format=json&nojsoncallback=1`);
       })
       .then(res => {
         res.data.photoset.photo.forEach((photo) => {

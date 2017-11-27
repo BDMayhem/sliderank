@@ -26,7 +26,7 @@ class Album extends Component {
   }
 
   getAlbumFromDB() {
-    axios.get(`${process.env.REACT_APP_BASE_URL}${this.props.match.params.id}`)
+    axios.get(`https://bd-vote.herokuapp.com/api/albums/${this.props.match.params.id}`)
       .then(res => {
         if (res.data.hasOwnProperty('photoset')) {
           this.setState({
@@ -66,7 +66,7 @@ class Album extends Component {
   }
 
   updateAlbum() {
-    axios.put(`${process.env.REACT_APP_BASE_URL}${this.props.match.params.id}`, this.state.album)
+    axios.put(`https://bd-vote.herokuapp.com/api/albums/${this.props.match.params.id}`, this.state.album)
       .then(this.getAlbumFromDB)
       .catch(err => console.error(err));
   }
