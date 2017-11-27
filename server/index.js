@@ -59,6 +59,7 @@ router.route('/albums/:album_id')
 
 app.use('/api', router);
 
+app.use(express.static('build'));
 app.get('*', function(request, response) {
   response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
 });
