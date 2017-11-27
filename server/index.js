@@ -25,7 +25,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(express.static(path.resolve(__dirname, '../react-ui/build'));
+app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
 app.get('/api', (req, res) => res.json({ message: 'API initialized' }));
 
