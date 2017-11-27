@@ -6,7 +6,7 @@ import Album from './album';
 const HomePage = () => {
   return (
     <Home
-      url='localhost:5000/api/albums/'
+      url='https://bd-vote.herokuapp.com/api/albums/'
     />
   );
 };
