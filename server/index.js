@@ -7,7 +7,7 @@ const Album = require('./models/albums');
 const app = express();
 const router = express.Router();
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 5000;
 
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.DB_URL, { useMongoClient: true });
