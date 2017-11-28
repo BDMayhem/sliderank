@@ -26,7 +26,7 @@ class Album extends Component {
   }
 
   getAlbumFromDB() {
-    axios.get(`${process.env.REACT_APP_BASE_URL}${this.props.match.params.id}`)
+    axios.get(`${process.env.REACT_APP_BASE_URL}albums/${this.props.match.params.id}`)
       .then(res => {
         if (res.data.hasOwnProperty('photoset')) {
           this.setState({
