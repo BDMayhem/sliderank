@@ -25,7 +25,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-// app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
+app.use(express.static(path.resolve(__dirname, '../react-ui/build')));
 
 app.get('/api', (req, res) => res.json({ message: 'API initialized' }));
 
@@ -67,8 +67,8 @@ router.route('/env')
 
 app.use('/api', router);
 
-// app.get('*', function(request, response) {
-//   response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
-// });
+app.get('*', function(request, response) {
+  response.sendFile(path.resolve(__dirname, '../react-ui/build', 'index.html'));
+});
 
 app.listen(port, () => console.log(`API running on port ${port}`));
