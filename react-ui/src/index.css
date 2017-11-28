@@ -19,6 +19,10 @@ img {
   max-width: 100%;
 }
 
+.vert {
+  display: none;
+}
+
 @media screen and (max-width: 800px) {
   .albumlist {
     flex-direction: column;
@@ -26,6 +30,14 @@ img {
 
   .albumitem {
     width: 90%;
+  }
+
+  .horiz {
+    display: none;
+  }
+
+  .vert {
+    display: block;
   }
 }
 

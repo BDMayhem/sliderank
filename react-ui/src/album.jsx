@@ -26,7 +26,7 @@ class Album extends Component {
   }
 
   getAlbumFromDB() {
-    axios.get(`https://bd-vote.herokuapp.com/api/albums/${this.props.match.params.id}`)
+    axios.get(`${process.env.REACT_APP_BASE_URL}${this.props.match.params.id}`)
       .then(res => {
         if (res.data.hasOwnProperty('photoset')) {
           this.setState({
@@ -52,7 +52,6 @@ class Album extends Component {
 
   submitVote(e) {
     e.preventDefault();
-    console.log('click')
     const album = this.state.album;
     const selection = this.state.selection;
     let sum;
@@ -66,7 +65,7 @@ class Album extends Component {
   }
 
   updateAlbum() {
-    axios.put(`https://bd-vote.herokuapp.com/api/albums/${this.props.match.params.id}`, this.state.album)
+    axios.put(`${process.env.REACT_APP_BASE_URL}${this.props.match.params.id}`, this.state.album)
       .then(this.getAlbumFromDB)
       .catch(err => console.error(err));
   }
@@ -112,6 +111,8 @@ const SortableList = SortableContainer(({items, name, submitVote}) => {
         <br />
         <input type="button" value='Submit' onClick={submitVote}/>
       </div>
+      <h3 className='horiz'>Sort the photos with your favorites to the left</h3>
+      <h3 className='vert'>Sort the photos with your favorites to the top</h3>
       <div className='albumlist'>
         {items.map((value, index) => (
           <SortableItem key={`item-${index}`} index={index} value={value} />

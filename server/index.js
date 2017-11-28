@@ -60,6 +60,11 @@ router.route('/albums/:album_id')
     });
   });
 
+router.route('/env')
+  .get(function(req, res) {
+    res.json({ key: process.env.REACT_APP_FLICKR_KEY });
+  });
+
 app.use('/api', router);
 
 app.get('*', function(request, response) {
