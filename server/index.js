@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const Album = require('./models/albums');
 const path = require('path');
+const axios = require('axios');
 
 const app = express();
 const router = express.Router();
@@ -36,15 +37,41 @@ router.route('/albums')
       res.json(albums);
     });
   })
-  .post(function(req, res) {
-    const album = new Album();
-    album.photoset = req.body.photoset;
 
-    album.save(function(err) {
-      if (err) res.send(err);
-      res.json({ message: 'album added' });
-    });
-  });
+  .post(function (req, res) {
+    console.log(req.body)
+    //check if submitted URL has user name or id
+    axios.get(`https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&api_key=${process.env.REACT_APP_FLICKR_KEY}&username=${req.body.owner}&format=json&nojsoncallback=1`)
+      .then(nameRes => {
+        let checkedOwner;
+        //if name, convert to id
+        if (nameRes.data.stat === 'ok') {
+          checkedOwner = nameRes.data.user.id;
+        }  else {
+          checkedOwner = req.body.owner;
+        }
+        return axios.get(`https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${process.env.REACT_APP_FLICKR_KEY}&photoset_id=${req.body.photoset}&user_id=${checkedOwner}&format=json&nojsoncallback=1`);
+      })
+      .then(setRes => {
+        setRes.data.photoset.photo.forEach((photo) => {
+          photo.score = 0;
+          photo.votes = 0;
+        });
+        console.log('setRes.data', setRes.data);
+        if (setRes.data.stat === 'ok'){
+          const album = new Album();
+          album.photoset = setRes.data.photoset;
+          
+          album.save(function(err) {
+            console.log('saved')
+            if (err) res.send(err);
+            res.json({ message: 'album added' });
+          });
+        } else {
+            console.log('not a valid flickr album url');
+          }
+      });
+});
 
 router.route('/albums/:album_id')
   .get(function(req, res) {
@@ -58,11 +85,6 @@ router.route('/albums/:album_id')
       if(err || !album) res.send(err);
       res.json(album);
     });
-  });
-
-router.route('/env')
-  .get(function(req, res) {
-    res.json({ key: process.env.REACT_APP_FLICKR_KEY });
   });
 
 app.use('/api', router);

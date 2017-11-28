@@ -24,41 +24,16 @@ class Home extends Component {
           loading: false
         });
       });
-    
-    axios.get(`${process.env.REACT_APP_BASE_URL}env`)
-      .then(res => {
-        this.setState({
-          key: res.data.key
-        })
-      })
   }
 
   handleAlbumSubmit(owner, photoset) {
-    //check if submitted URL has user name or id
-    axios.get(`https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&api_key=${this.state.key}&username=${owner}&format=json&nojsoncallback=1`)
-      .then(res => {
-        let checkedOwner;
-        //if name, convert to id
-        if (res.data.stat === 'ok') {
-          checkedOwner = res.data.user.id;
-        }  else {
-          checkedOwner = owner;
-        }
-        return axios.get(`https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${this.state.key}&photoset_id=${photoset}&user_id=${checkedOwner}&format=json&nojsoncallback=1`);
+    this.setState({ loading: true });
+    axios.post(this.props.url, {owner, photoset})
+      .then((res) => {
+        console.log(res.data.message);
+        this.loadAlbumsDataFromDB();
       })
-      .then(res => {
-        res.data.photoset.photo.forEach((photo) => {
-          photo.score = 0;
-          photo.votes = 0;
-        });
-        res.data.stat === 'ok'
-          ? axios.post(this.props.url, res.data)
-            .then(() => {
-              this.loadAlbumsDataFromDB();
-            })
-            .catch(err => console.error(err))
-          : console.log('flash nope');
-      });
+      .catch(err => console.error(err));
   }
 
   componentDidMount() {
@@ -75,6 +50,7 @@ class Home extends Component {
     return(
       <div>
         <h1>Albums</h1>
+        <p>Sample album - https://www.flickr.com/photos/16748348@N00/sets/72157594267407308</p>
         {list}
         <h2>Add a Flickr album</h2>
         <AlbumForm onAlbumSubmit={this.handleAlbumSubmit}/>
