@@ -9,7 +9,7 @@ class Home extends Component {
     this.state = {
       data: [],
       loading: true,
-      key: ''
+      key: null
     };
 
     this.loadAlbumsDataFromDB = this.loadAlbumsDataFromDB.bind(this);
