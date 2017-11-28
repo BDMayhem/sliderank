@@ -65,7 +65,7 @@ class Album extends Component {
   }
 
   updateAlbum() {
-    axios.put(`${process.env.REACT_APP_BASE_URL}${this.props.match.params.id}`, this.state.album)
+    axios.put(`${process.env.REACT_APP_BASE_URL}albums/${this.props.match.params.id}`, this.state.album)
       .then(this.getAlbumFromDB)
       .catch(err => console.error(err));
   }
