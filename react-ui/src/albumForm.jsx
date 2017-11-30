@@ -4,9 +4,7 @@ class AlbumForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      albumURL: '',
-      owner: '',
-      photoset: ''
+      albumURL: ''
     };
     this.handleAlbumChange = this.handleAlbumChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,17 +29,10 @@ class AlbumForm extends Component {
       ? urlArr[urlArr.indexOf('albums') + 1] 
       : urlArr[urlArr.indexOf('sets') + 1];
 
+    this.props.onAlbumSubmit(urlOwner, urlSet, url);
+    
     this.setState({
-      owner: urlOwner,
-      photoset: urlSet
-    }, () =>{
-      this.props.onAlbumSubmit(urlOwner, urlSet);
-    });
-
-    this.setState({
-      albumURL: '',
-      owner: '',
-      photoset: ''
+      albumURL: ''
     });
   }
 

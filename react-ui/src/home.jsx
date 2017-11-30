@@ -26,9 +26,9 @@ class Home extends Component {
       });
   }
 
-  handleAlbumSubmit(owner, photoset) {
+  handleAlbumSubmit(owner, photoset, url) {
     this.setState({ loading: true });
-    axios.post(this.props.url, {owner, photoset})
+    axios.post(this.props.url, {owner, photoset, url})
       .then((res) => {
         console.log(res.data.message);
         this.loadAlbumsDataFromDB();

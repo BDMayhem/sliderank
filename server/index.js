@@ -40,16 +40,10 @@ router.route('/albums')
 
   .post(function (req, res) {
     //check if submitted URL has user name or id
-    axios.get(`https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&api_key=${process.env.REACT_APP_FLICKR_KEY}&username=${req.body.owner}&format=json&nojsoncallback=1`)
+    const url = `https://api.flickr.com/services/rest/?method=flickr.urls.lookupUser&api_key=${process.env.REACT_APP_FLICKR_KEY}&url=${req.body.url}&format=json&nojsoncallback=1`;
+    axios.get(url)
       .then(nameRes => {
-        let checkedOwner;
-        //if name, convert to id
-        if (nameRes.data.stat === 'ok') {
-          checkedOwner = nameRes.data.user.id;
-        }  else {
-          checkedOwner = req.body.owner;
-        }
-        console.log(checkedOwner)
+        let checkedOwner = nameRes.data.user.id;
         return axios.get(`https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${process.env.REACT_APP_FLICKR_KEY}&photoset_id=${req.body.photoset}&user_id=${checkedOwner}&format=json&nojsoncallback=1`);
       })
       .then(setRes => {
