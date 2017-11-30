@@ -12,7 +12,8 @@ const AlbumsSchema = new Schema({
       title: String,
       farm: Number,
       server: String,
-      id: String
+      id: String,
+      secret: String
     }],
     title: String,
     topPhoto: String

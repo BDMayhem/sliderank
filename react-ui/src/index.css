@@ -47,3 +47,11 @@ img {
   width: 50%;
   margin: 0 auto;
 }
+
+figure {
+  display: inline-block;
+}
+
+.top-photo {
+  width: 200px;
+}

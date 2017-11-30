@@ -39,7 +39,6 @@ router.route('/albums')
   })
 
   .post(function (req, res) {
-    console.log(req.body)
     //check if submitted URL has user name or id
     axios.get(`https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&api_key=${process.env.REACT_APP_FLICKR_KEY}&username=${req.body.owner}&format=json&nojsoncallback=1`)
       .then(nameRes => {
@@ -50,6 +49,7 @@ router.route('/albums')
         }  else {
           checkedOwner = req.body.owner;
         }
+        console.log(checkedOwner)
         return axios.get(`https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${process.env.REACT_APP_FLICKR_KEY}&photoset_id=${req.body.photoset}&user_id=${checkedOwner}&format=json&nojsoncallback=1`);
       })
       .then(setRes => {
@@ -64,8 +64,8 @@ router.route('/albums')
           });
 
           setRes.data.photoset.topPhoto = `https://farm${setRes.data.photoset.photo[0].farm}.staticflickr.com/${setRes.data.photoset.photo[0].server}/${setRes.data.photoset.photo[0].id}_${setRes.data.photoset.photo[0].secret}.jpg`;
-          
-          delete setRes.data.setRes.data.photoset.page;
+
+          delete setRes.data.photoset.page;
           delete setRes.data.photoset.per_page;
           delete setRes.data.photoset.perpage;
           delete setRes.data.photoset.pages;
@@ -80,8 +80,8 @@ router.route('/albums')
             res.json({ message: 'album added' });
           });
         } else {
-            console.log('not a valid flickr album url');
-          }
+            console.log('not a valid flickr album url', setRes.data);
+        }
       });
 });
 

@@ -10,13 +10,18 @@ class CommentList extends Component {
       <div>
         <ul>
           { this.props.data.map((album) => (
-            <li
+            <figure className='album-link'
               key={ album._id }
             >
               <a href={ this.albumLink(album._id) }>
-                { album.photoset.title }
-              </a>, an album by { album.photoset.ownername }
-            </li>
+                <img className='top-photo' src={ album.photoset.topPhoto } alt={ album.photoset.title } />
+              </a>
+                <figcaption>
+                  <a href={ this.albumLink(album._id) }>
+                    { album.photoset.title }
+                  </a>, an album by { album.photoset.ownername }
+                </figcaption>
+            </figure>
           ))}
         </ul>
       </div>

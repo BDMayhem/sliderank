@@ -61,7 +61,13 @@ class Album extends Component {
       album.photoset.photo[albumIndex].votes++;
       album.photoset.photo[albumIndex].score = sum / album.photoset.photo[albumIndex].votes;
     });
+
+    //sort photos by score
+    album.photoset.photo.sort((a, b) => b.score - a.score);
+    //assign best photo to top
+    album.photoset.topPhoto = `https://farm${album.photoset.photo[0].farm}.staticflickr.com/${album.photoset.photo[0].server}/${album.photoset.photo[0].id}_${album.photoset.photo[0].secret}.jpg`;
     this.setState({ album }, this.updateAlbum);
+    console.log(album.photoset.topPhoto)
   }
 
   updateAlbum() {
