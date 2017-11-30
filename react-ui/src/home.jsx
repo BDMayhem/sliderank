@@ -51,9 +51,8 @@ class Home extends Component {
       <div>
         <h1>Albums</h1>
         <p>Sample album - https://www.flickr.com/photos/16748348@N00/sets/72157594267407308</p>
-        {list}
-        <h2>Add a Flickr album</h2>
         <AlbumForm onAlbumSubmit={this.handleAlbumSubmit}/>
+        {list}
       </div>
     );
   }

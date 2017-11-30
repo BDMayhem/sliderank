@@ -50,8 +50,5 @@ img {
 
 figure {
   display: inline-block;
-}
-
-.top-photo {
-  width: 200px;
+  width: 10%;
 }

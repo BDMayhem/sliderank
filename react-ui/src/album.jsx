@@ -93,6 +93,7 @@ class Album extends Component {
           onSortEnd={this.onSortEnd}
           axis='xy'
           submitVote={this.submitVote}
+          distance='5'
         />
       );
     }
@@ -103,7 +104,9 @@ const SortableItem = SortableElement(({value}) =>
   <div className='albumitem'>
     {value.title}
     <br />
-    <img src={`https://farm${value.farm}.staticflickr.com/${value.server}/${value.id}_${value.secret}.jpg`} alt={value.title}/>
+    <a href={`https://farm${value.farm}.staticflickr.com/${value.server}/${value.id}_${value.secret}_b.jpg`} target='_blank'>
+      <img src={`https://farm${value.farm}.staticflickr.com/${value.server}/${value.id}_${value.secret}.jpg`} alt={value.title}/>
+    </a>
     <br />
     {value.score.toFixed(2)}
   </div>
