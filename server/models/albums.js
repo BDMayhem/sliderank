@@ -4,16 +4,18 @@ const Schema = mongoose.Schema;
 const AlbumsSchema = new Schema({
   photoset: {
     id: String,
-    primary: String,
     owner: String,
     ownername: String, 
-    photo: [],
-    page: Number,
-    per_page: Number,
-    perpage: Number,
-    pages: Number,
-    total: Number,
-    title: String
+    photo: [{
+      votes: Number,
+      score: Number,
+      title: String,
+      farm: Number,
+      server: String,
+      id: String
+    }],
+    title: String,
+    topPhoto: String
   }
 });
 

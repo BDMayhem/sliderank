@@ -53,12 +53,24 @@ router.route('/albums')
         return axios.get(`https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${process.env.REACT_APP_FLICKR_KEY}&photoset_id=${req.body.photoset}&user_id=${checkedOwner}&format=json&nojsoncallback=1`);
       })
       .then(setRes => {
-        setRes.data.photoset.photo.forEach((photo) => {
-          photo.score = 0;
-          photo.votes = 0;
-        });
-        console.log('setRes.data', setRes.data);
         if (setRes.data.stat === 'ok'){
+          setRes.data.photoset.photo.forEach((photo) => {
+            photo.score = 0;
+            photo.votes = 0;
+            delete photo.isfamily;
+            delete photo.isfriend;
+            delete photo.ispublic;
+            delete photo.isprimary;
+          });
+
+          setRes.data.photoset.topPhoto = `https://farm${setRes.data.photoset.photo[0].farm}.staticflickr.com/${setRes.data.photoset.photo[0].server}/${setRes.data.photoset.photo[0].id}_${setRes.data.photoset.photo[0].secret}.jpg`;
+          
+          delete setRes.data.setRes.data.photoset.page;
+          delete setRes.data.photoset.per_page;
+          delete setRes.data.photoset.perpage;
+          delete setRes.data.photoset.pages;
+          delete setRes.data.photoset.primary;
+
           const album = new Album();
           album.photoset = setRes.data.photoset;
           
