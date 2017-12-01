@@ -40,9 +40,10 @@ router.route('/albums')
 
   .post(function (req, res) {
     let promises = [];
-
+    //Look up user id
     axios.get(`https://api.flickr.com/services/rest/?method=flickr.urls.lookupUser&api_key=${process.env.REACT_APP_FLICKR_KEY}&url=${req.body.url}&format=json&nojsoncallback=1`)
       .then(nameRes => {
+        //find all photos in album
         return axios.get(`https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${process.env.REACT_APP_FLICKR_KEY}&photoset_id=${req.body.photoset}&user_id=${nameRes.data.user.id}&format=json&nojsoncallback=1`);
       })
       .then(setRes => {
@@ -58,28 +59,28 @@ router.route('/albums')
 
             photo.score = 0;
             photo.votes = 0;
-
+            //get the available sizes of each photo
             promises.push(axios.get(`https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=${process.env.REACT_APP_FLICKR_KEY}&photo_id=${photo.id}&format=json&nojsoncallback=1`));
           });
 
+          //use the largest size: the last in the photo array
           axios.all(promises).then((nameRes) => {
             nameRes.forEach((response, index) => {
               setRes.data.photoset.photo[index].link = response.data.sizes.size[response.data.sizes.size.length-1].source;
             })
           })
             .then(() => {
+              //assign a default topPhoto
               setRes.data.photoset.topPhoto = setRes.data.photoset.photo[0].link;
-              console.log(setRes.data.photoset.topPhoto, "top!")    
             })
             .then(() => {
-              console.log('after axios.all')
-    
               delete setRes.data.photoset.page;
               delete setRes.data.photoset.per_page;
               delete setRes.data.photoset.perpage;
               delete setRes.data.photoset.pages;
               delete setRes.data.photoset.primary;
     
+              //save it all to the db
               const album = new Album();
               album.photoset = setRes.data.photoset;
               
@@ -93,7 +94,7 @@ router.route('/albums')
             console.log('not a valid flickr album url', setRes.data);
         }
       });
-});
+  });
 
 router.route('/albums/:album_id')
   .get(function(req, res) {
