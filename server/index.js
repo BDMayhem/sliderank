@@ -39,40 +39,56 @@ router.route('/albums')
   })
 
   .post(function (req, res) {
-    //check if submitted URL has user name or id
-    const url = `https://api.flickr.com/services/rest/?method=flickr.urls.lookupUser&api_key=${process.env.REACT_APP_FLICKR_KEY}&url=${req.body.url}&format=json&nojsoncallback=1`;
-    axios.get(url)
+    let promises = [];
+
+    axios.get(`https://api.flickr.com/services/rest/?method=flickr.urls.lookupUser&api_key=${process.env.REACT_APP_FLICKR_KEY}&url=${req.body.url}&format=json&nojsoncallback=1`)
       .then(nameRes => {
-        let checkedOwner = nameRes.data.user.id;
-        return axios.get(`https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${process.env.REACT_APP_FLICKR_KEY}&photoset_id=${req.body.photoset}&user_id=${checkedOwner}&format=json&nojsoncallback=1`);
+        return axios.get(`https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=${process.env.REACT_APP_FLICKR_KEY}&photoset_id=${req.body.photoset}&user_id=${nameRes.data.user.id}&format=json&nojsoncallback=1`);
       })
       .then(setRes => {
         if (setRes.data.stat === 'ok'){
           setRes.data.photoset.photo.forEach((photo) => {
-            photo.score = 0;
-            photo.votes = 0;
             delete photo.isfamily;
             delete photo.isfriend;
             delete photo.ispublic;
             delete photo.isprimary;
+            delete photo.farm;
+            delete photo.server;
+            delete photo.secret;
+
+            photo.score = 0;
+            photo.votes = 0;
+
+            promises.push(axios.get(`https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=${process.env.REACT_APP_FLICKR_KEY}&photo_id=${photo.id}&format=json&nojsoncallback=1`));
           });
 
-          setRes.data.photoset.topPhoto = `https://farm${setRes.data.photoset.photo[0].farm}.staticflickr.com/${setRes.data.photoset.photo[0].server}/${setRes.data.photoset.photo[0].id}_${setRes.data.photoset.photo[0].secret}.jpg`;
-
-          delete setRes.data.photoset.page;
-          delete setRes.data.photoset.per_page;
-          delete setRes.data.photoset.perpage;
-          delete setRes.data.photoset.pages;
-          delete setRes.data.photoset.primary;
-
-          const album = new Album();
-          album.photoset = setRes.data.photoset;
-          
-          album.save(function(err) {
-            console.log('saved')
-            if (err) res.send(err);
-            res.json({ message: 'album added' });
-          });
+          axios.all(promises).then((nameRes) => {
+            nameRes.forEach((response, index) => {
+              setRes.data.photoset.photo[index].link = response.data.sizes.size[response.data.sizes.size.length-1].source;
+            })
+          })
+            .then(() => {
+              setRes.data.photoset.topPhoto = setRes.data.photoset.photo[0].link;
+              console.log(setRes.data.photoset.topPhoto, "top!")    
+            })
+            .then(() => {
+              console.log('after axios.all')
+    
+              delete setRes.data.photoset.page;
+              delete setRes.data.photoset.per_page;
+              delete setRes.data.photoset.perpage;
+              delete setRes.data.photoset.pages;
+              delete setRes.data.photoset.primary;
+    
+              const album = new Album();
+              album.photoset = setRes.data.photoset;
+              
+              album.save(function(err) {
+                console.log('saved')
+                if (err) res.send(err);
+                res.json({ message: 'album added' });
+              });
+            });
         } else {
             console.log('not a valid flickr album url', setRes.data);
         }

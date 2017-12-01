@@ -10,10 +10,8 @@ const AlbumsSchema = new Schema({
       votes: Number,
       score: Number,
       title: String,
-      farm: Number,
-      server: String,
       id: String,
-      secret: String
+      link: String
     }],
     title: String,
     topPhoto: String

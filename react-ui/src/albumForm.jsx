@@ -23,13 +23,12 @@ class AlbumForm extends Component {
     if (!url) return;
 
     const urlArr = url.split('/');
-    const urlOwner = urlArr[urlArr.indexOf('photos') + 1];
     //sometimes flickr refers to albums as 'sets'
     const urlSet = urlArr.indexOf('albums') >= 0 
       ? urlArr[urlArr.indexOf('albums') + 1] 
       : urlArr[urlArr.indexOf('sets') + 1];
 
-    this.props.onAlbumSubmit(urlOwner, urlSet, url);
+    this.props.onAlbumSubmit(urlSet, url);
     
     this.setState({
       albumURL: ''
