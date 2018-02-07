@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import AlbumList from './albumList';
 import AlbumForm from './albumForm';
+import {HomeLink} from './HomeLink';
 
 class Home extends Component {
   constructor(props) {
@@ -48,12 +49,14 @@ class Home extends Component {
       : list = <AlbumList data={this.state.data}/>;
 
     return(
-      <div>
-        <h1>Albums</h1>
+      <React.Fragment>
+        <HomeLink />
+        <h1>SlideRank</h1>
+        <span className='site-desc'>Rank all the images in a Flickr album, 5 at a time</span>
         <p>Sample album - https://www.flickr.com/photos/16748348@N00/sets/72157594267407308</p>
         <AlbumForm onAlbumSubmit={this.handleAlbumSubmit}/>
         {list}
-      </div>
+      </React.Fragment>
     );
   }
 }

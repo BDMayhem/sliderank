@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
+import { HomeLink } from './HomeLink';
 
 class Album extends Component {
   constructor(props) {
@@ -78,7 +79,7 @@ class Album extends Component {
   onSortEnd({ oldIndex, newIndex }) {
     this.setState({
       selection: arrayMove(this.state.selection, oldIndex, newIndex)
-    }, () => console.log(this.state.selection) );
+    });
   }
 
   render() {
@@ -92,7 +93,6 @@ class Album extends Component {
           onSortEnd={this.onSortEnd}
           axis='xy'
           submitVote={this.submitVote}
-          distance={5}
         />
       );
     }
@@ -100,33 +100,33 @@ class Album extends Component {
 }
 
 const SortableItem = SortableElement(({value}) => 
-  <div className='albumitem'>
-    {value.title}
-    <br />
+  <div className='album-item'>
     <a href={value.link} target='_blank'>
       <img src={value.link} alt={value.title}/>
     </a>
-    <br />
-    {value.score.toFixed(2)}
+    <p>
+      {value.title}
+    </p>
+    {/* {value.score.toFixed(2)} */}
   </div>
 );
 
 const SortableList = SortableContainer(({items, name, submitVote}) => {
   return(
-    <div>
-      <div className='top'>
-        <h2>{name}</h2>
-        <br />
-        <input type="button" value='Submit' onClick={submitVote}/>
-      </div>
-      <h3 className='horiz'>Sort the photos with your favorites to the left</h3>
-      <h3 className='vert'>Sort the photos with your favorites to the top</h3>
-      <div className='albumlist'>
+    <React.Fragment>
+      <HomeLink />
+      <h2>{name}</h2>
+      <div className='album-list'>
         {items.map((value, index) => (
           <SortableItem key={`item-${index}`} index={index} value={value} />
         ))}
       </div>
-    </div>
+      <div className='top'>
+        <h3 className='horiz'>Sort the photos with your favorites to the left</h3>
+        <h3 className='vert'>Sort the photos with your favorites to the top</h3>
+        <button onClick={submitVote}><span>Submit Votes</span></button>
+      </div>
+    </React.Fragment>
   );
 });
 

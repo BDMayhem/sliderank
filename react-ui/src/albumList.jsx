@@ -5,11 +5,15 @@ class CommentList extends Component {
     return `/album/${id}`;
   }
 
+  rankedLink(id) {
+    return `/album/${id}/ranked`
+  }
+
   render() {
     return(
-      <div>
+      <div className="album-list">
         { this.props.data.map((album) => (
-          <figure className='album-link'
+          <figure className='album-item'
             key={ album._id }
           >
             <a href={ this.albumLink(album._id) }>
@@ -20,6 +24,7 @@ class CommentList extends Component {
                   { album.photoset.title }
                 </a>, by { album.photoset.ownername }
               </figcaption>
+              <p><a href={ this.rankedLink(album._id) }>View Ranked Images</a></p>
           </figure>
         ))}
       </div>

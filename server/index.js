@@ -83,11 +83,12 @@ router.route('/albums')
               //save it all to the db
               const album = new Album();
               album.photoset = setRes.data.photoset;
+              album.photoset.link = req.body.url;
               
               album.save(function(err) {
                 console.log('saved')
                 if (err) res.send(err);
-                res.json({ message: 'album added' });
+                res.json({ message: req.body.url });
               });
             });
         } else {

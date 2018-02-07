@@ -38,9 +38,8 @@ class AlbumForm extends Component {
   render() {
     return(
       <form onSubmit={this.handleSubmit}>
-        <h3>Add a Flickr album</h3>
-        <input type='text' placeholder='add album' onChange={this.handleAlbumChange}/>
-        <input type='submit' value='Submit'/>
+        <input type='text' placeholder='add Flickr album' onChange={this.handleAlbumChange}/>
+        <button><span>Submit</span></button>
       </form>
     );
   }

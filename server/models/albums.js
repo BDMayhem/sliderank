@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const AlbumsSchema = new Schema({
   photoset: {
     id: String,
+    link: String,
     owner: String,
     ownername: String, 
     photo: [{
