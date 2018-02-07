@@ -52,9 +52,11 @@ class Home extends Component {
       <React.Fragment>
         <HomeLink />
         <h1>SlideRank</h1>
-        <span className='site-desc'>Rank all the images in a Flickr album, 5 at a time</span>
-        <p>Sample album - https://www.flickr.com/photos/16748348@N00/sets/72157594267407308</p>
-        <AlbumForm onAlbumSubmit={this.handleAlbumSubmit}/>
+        <div style={{textAlign: 'center'}}>
+          <span className='site-desc'>Rank all the images in a Flickr album, 5 at a time</span>
+          <p>Sample album - https://www.flickr.com/photos/16748348@N00/sets/72157594267407308</p>
+          <AlbumForm onAlbumSubmit={this.handleAlbumSubmit}/>
+        </div>
         {list}
       </React.Fragment>
     );

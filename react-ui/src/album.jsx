@@ -113,7 +113,7 @@ const SortableItem = SortableElement(({value}) =>
 
 const SortableList = SortableContainer(({items, name, submitVote}) => {
   return(
-    <React.Fragment>
+    <div>
       <HomeLink />
       <h2>{name}</h2>
       <div className='album-list'>
@@ -126,7 +126,7 @@ const SortableList = SortableContainer(({items, name, submitVote}) => {
         <h3 className='vert'>Sort the photos with your favorites to the top</h3>
         <button onClick={submitVote}><span>Submit Votes</span></button>
       </div>
-    </React.Fragment>
+    </div>
   );
 });
 

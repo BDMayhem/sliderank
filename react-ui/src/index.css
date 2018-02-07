@@ -103,3 +103,9 @@ button span {
   display: block;
   padding: 12px 24px;
 }
+
+input {
+  font-size: 1.5rem;
+  border: none;
+  padding: 12px;
+}
